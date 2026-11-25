@@ -44,6 +44,12 @@ if (/[^\x00-\x7F]/.test(LINE)) {
   console.error("entry must be ASCII only");
   process.exit(1);
 }
+// No control characters: the entry is plain printable text — a tab or
+// other invisible control byte would corrupt the line the grader reads.
+if (/[\x00-\x1F\x7F]/.test(LINE)) {
+  console.error("entry must not contain control characters");
+  process.exit(1);
+}
 
 // Write to MAKEFUN_OUTPUT_DIR when set, and to /output as well, so the gate
 // finds the file either way. Dedupe first: when the harness already points
